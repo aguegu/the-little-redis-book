@@ -1,188 +1,329 @@
 # About This Book
+# 关于本书
 
 ## License
+## 许可证
 
 The Little Redis Book is licensed under the Attribution-NonCommercial 3.0 Unported license. You should not have paid for this book.
 
+《Redis小册子》使用《署名-非商业性使用 3.0 未本地化版本》的CC开源协议。您不应为此书付出费用。
+
 You are free to copy, distribute, modify or display the book. However, I ask that you always attribute the book to me, Karl Seguin, and do not use it for commercial purposes.
 
+您可以自由的复制、传播、修改以及展示本书。不过，我要求您永远保留本书的署名权是我的，Karl Seguin，并不将此书用作商业用途。
+
 You can see the *full text* of **the license at**:
+您可以在这里查看到该**协议**的*全部内容*：
 
 <http://creativecommons.org/licenses/by-nc/3.0/legalcode>
 
 ## About The Author
+## 关于作者
 
 Karl Seguin is a developer with experience across various fields and technologies. He's an active contributor to Open-Source Software projects, a technical writer and an occasional speaker. He's written various articles, as well as a few tools, about Redis. Redis powers the ranking and statistics of his free service for casual game developers: [mogade.com](http://mogade.com/).
 
+Karl Seguin 是在多个领域以及技术方面都有经验的开发者。他是开源软件项目的积极贡献者，技术作家还时不时进行演讲。关于Redis，他已经写了多篇论文，以及一些工具。Redis帮助他在其不定期义务参与的游戏开发中提升等级以及统计数据。
+
 Karl wrote [The Little MongoDB Book](http://openmymind.net/2011/3/28/The-Little-MongoDB-Book/), the free and popular book about MongoDB.
+
+Karl 还写了一本免费而且相当流行的关于MongoDB的书：[MongoDB小册子](http://openmymind.net/2011/3/28/The-Little-MongoDB-Book/)。
 
 His blog can be found at <http://openmymind.net> and he tweets via [@karlseguin](http://twitter.com/karlseguin)
 
+作者的博客：<http://openmymind.net>，twitter：[@karlseguin](http://twitter.com/karlseguin)
+
 ## With Thanks To
+## 致谢
 
 A special thanks to [Perry Neal](https://twitter.com/perryneal) for lending me his eyes, mind and passion. You provided me with invaluable help. Thank you.
+特别感谢[Perry Neal](https://twitter.com/perryneal)，用他的注意力、思考和激情来帮助我，他的帮助无比珍贵，在此表达感谢。
 
 ## Latest Version
+## 最新版本
 
 The latest source of this book is available at:
 <http://github.com/karlseguin/the-little-redis-book>
 
+可以在<http://github.com/karlseguin/the-little-redis-book>这里找到本书的最新版本。
+
 # Introduction
+# 简介
 
 Over the last couple years, the techniques and tools used for persisting and querying data have grown at an incredible pace. While it's safe to say that relational databases aren't going anywhere, we can also say that the ecosystem around data is never going to be the same.
 
+最近二十年来，用来存储和查询数据的技术和工具发展相当迅猛。虽然我们依然能说关系数据库估计不会再有什么大动静，但我们能说现在数据的生态已经完全今非夕比了。
+
 Of all the new tools and solutions, for me, Redis has been the most exciting. Why? First because it's unbelievably easy to learn. Hours is the right unit to use when talking about length of time it takes to get comfortable with Redis. Secondly, it solves a specific set of problems while at the same time being quite generic. What exactly does that mean? Redis doesn't try to be all things to all data. As you get to know Redis, it'll become increasingly evident what does and what does not belong in it. And when it does, as a developer, it's a great experience.
+
+在所有的新工具和解决方案中，对于我来说，Redis是最让人兴奋的。究其缘由，首先，学习它超级简单，要掌握Redis说需要的时间，是以小时为单位的。第二，它解决一个普遍存在的许多问题。这是什么意思呢？Redis并未试图成为所有数据的万能药。随着您对Redis的不断了解，您会越来越qinxi清晰地了解到Redis能做什么，不能做什么。当了解了这些概念之后，作为开发者来说，这将是非常有益的经验。
 
 While you can build a complete system using Redis only, I think most people will find that it supplements their more generic data solution - whether that be a traditional relational database, a document-oriented system, or something else. It's the kind of solution you use to implement specific features. In that way, it's similar to an indexing engine. You wouldn't build your entire application on Lucene. But when you need good search, it's a much better experience - for both you and your users. Of course, the similarities between Redis and indexing engines end there.
 
+虽然您可以玩完全用Redis构建一个完整的系统，但我想对于大多数人来说，Redis是对通用数据解决方案的补充，无论是传统的关系数据库，还是面向文本的系统，还是其它类型。Redis是用来弥补某些特殊功能的。从这个角度来理解，Redis更类似与是一个索引引擎。你不会把你的整个应用都用Lucene实现。但如果你需要强大的搜索，Lucence未您以及您的用户提供好得多的体验，当然，Redis和索引引擎的相似指出也就到此为止了。
+
 The goal of this book is to build the foundation you'll need to master Redis. We'll focus on learning Redis' five data structures and look at various data modeling approaches. We'll also touch on some key administrative details and debugging techniques.
 
+本书的目的在于为您掌握Redis打好基础。我们将重点学习Redis的物种数据结构，并研究多种数据建模的方法。我们还会接触到一些关键的管理细节以及调试技术。
+
 # Getting Started
+# 新手上路
 
 We all learn differently: some like to get their hands dirty, some like to watch videos, and some like to read. Nothing will help you understand Redis more than actually experiencing it. Redis is easy to install and comes with a simple shell that'll give us everything we need. Let's take a couple minutes and get it up and running on our machine.
 
+人们的学习方法各有不同：有些人喜欢动手实干，有些人喜欢观看视频，有些人则喜欢阅读。没有什么比真切地去感受Redis更能让你了解它。Redis安装非常简单，并自带简单的shell，这就提供了您所需要的一切。让我们花几分钟把Redis装上并运行起来。
+
 ## On Windows
+## Windows平台
 
 Redis itself doesn't officially support Windows, but there are options available. You wouldn't run these in production, but I've never experienced any limitations while doing development.
 
+Redis官方并不支持windows，不过还是有招。你不应该在上线阶段使用windows上的redis。不过在自己开发的过程中，我还没遇到什么限制。
+
 A port by Microsoft Open Technologies, Inc. can be found at <https://github.com/MSOpenTech/redis>. As of this writing the solution is not ready for use in production systems.
+
+微软开发技术公司提供了一个移植版本：<https://github.com/MSOpenTech/redis>。在写著本书的时候，这个版本还没准备好投入到生产系统中。
 
 Another solution, which has been available for some time, can be found at <https://github.com/dmajkic/redis/downloads>. You can download the most up to date version (which should be at the top of the list). Extract the zip file and, based on your architecture, open either the `64bit` or `32bit` folder.
 
+另一个解决方案，也能用有段时间了：<https://github.com/dmajkic/redis/downloads>。您可以下载其最新的版本(一般在列表最顶部)，解压zip文件，基于您的系统的架构，选择“64bit”或“32bit”的文件夹。
+
 ## On *nix and MacOSX
+## *nix 和 MaxOSX 平台
 
 For *nix and Mac users, building it from source is your best option. The instructions, along with the latest version number, are available at <http://redis.io/download>. At the time of this writing the latest version is 2.6.2; to install this version we would execute:
 
-	wget http://redis.googlecode.com/files/redis-2.6.2.tar.gz
+对于＊nix和Mac的用户来说，直接从源码编译是最好的选择。教程以及最新的版本号，可在<http://redis.io/download>查得。在写著本书时，最新的版本为2.6.2；安装只需要按照如下步骤执行：
+
+    wget http://redis.googlecode.com/files/redis-2.6.2.tar.gz
 	tar xzf redis-2.6.2.tar.gz
 	cd redis-2.6.2
 	make
 
 (Alternatively, Redis is available via various package managers. For example, MacOSX users with Homebrew installed can simply type `brew install redis`.)
+（此外，Redis也能够通过多种软件包管理工具进行安装。例如，使用Homebrew的MacOSX用户，只需要输入`brew install redis`即可）。
 
 If you built it from source, the binary outputs have been placed in the `src` directory. Navigate to the `src` directory by executing `cd src`.
 
+如果您是从源码编译，生成的二进制文件将保存在src文件夹内。要进入`src`文件夹，只需要执行`cd src`即可。
+
 ## Running and Connecting to Redis
+## 运行并连接到Redis
 
 If everything worked, the Redis binaries should be available at your fingertips. Redis has a handful of executables. We'll focus on the Redis server and the Redis command line interface (a DOS-like client). Let's start the server. In Windows, double click `redis-server`. On *nix/MacOSX run `./redis-server`.
 
+如果一切正常，Redis的可执行文件应该唾手可得。我们将着眼于Redis服务器以及它的命令行界面（类似与Dos的客户端）。让我们启动Redis服务器吧。在windows平台，双击`redis-server`；在*ni/MacOSX平台，执行`./redis-server`
+
 If you read the start up message you'll see a warning that the `redis.conf` file couldn't be found. Redis will instead use built-in defaults, which is fine for what we'll be doing.
+
+如果你读了启动消息，您将会看到一个警告`redis.conf`文件无法找到。Redis将会使用其内置的默认配置文件，这个对于我们接下来的操作没有什么影响。
 
 Next start the Redis console by either double clicking `redis-cli` (Windows) or running `./redis-cli` (*nix/MacOSX). This will connect to the locally-running server on the default port (6379).
 
+接下来，我们要一个Redis控制台程序，要么是双击`redis-cli`程序（Windows）或执行`./redis-cli` (*nix/MacOSX)。这个控制台就连接到本地运行的服务器，其默认端口号为6379。
+
 You can test that everything is working by entering `info` into the command line interface. You'll hopefully see a bunch of key-value pairs which provide a great deal of insight into the server's status.
+
+我们可以通过在命令行界面键入`info`命令测试服务器的属性。您一般是可以看到一组键-值对，提供了大量服务器状态的各种参数。
 
 If you are having problems with the above setup I suggest you seek help in the [official Redis support group](https://groups.google.com/forum/#!forum/redis-db).
 
+如果您在以上安装过程中遇到任何问题，建议您查看[官方的帮助文档](https://groups.google.com/forum/#!forum/redis-db)。
+
 # Redis Drivers
+# Redis 驱动
 
 As you'll soon learn, Redis' API is best described as an explicit set of functions. It has a very simple and procedural feel to it. This means that whether you are using the command line tool, or a driver for your favorite language, things are very similar. Therefore, you shouldn't have any problems following along if you prefer to work from a programming language. If you want, head over to the [client page](http://redis.io/clients) and download the appropriate driver.
 
+就像您即将学习到的，Redis的API的最佳表现形式就是详细的函数说明。它非常简单而且规范。这就意味着无论您是使用命令行界面，还是使用您所钟爱的语言驱动，它们的使用方法都非常接近。所以，即便您需要通过某种编程语言来了解Redis也不应该遇到任何问题。如果您想这么做的话，可以转向[客户端页面](http://redis.io/clients)来下载相应的语言驱动。
+
 # Chapter 1 - The Basics
+# 第1章 - 基础
 
 What makes Redis special? What types of problems does it solve? What should developers watch out for when using it? Before we can answer any of these questions, we need to understand what Redis is.
 
+是什么让Redis与众不同呢？它又解决了哪些问题呢？开发者在使用它的时候需要注意那些问题？在我们回答以上所有问题之前，我们首先要了解Redis是什么。
+
 Redis is often described as an in-memory persistent key-value store. I don't think that's an accurate description. Redis does hold all the data in memory (more on this in a bit), and it does write that out to disk for persistence, but it's much more than a simple key-value store. It's important to step beyond this misconception otherwise your perspective of Redis and the problems it solves will be too narrow.
+
+Redis常被描述为是一种基于内存持久化的Key-Value（键-值）数据库，我认为这种描述还有失准确。Redis确实将所有的数据都保存在内存中，而且通过将数据写入磁盘以持久保存，但它远非简单的Key-Value数据库。务必要跨过这个误区，否则您对于Redis的观念将变得想当狭隘，而难以将它推广应用到更广阔的领域。 
 
 The reality is that Redis exposes five different data structures, only one of which is a typical key-value structure. Understanding these five data structures, how they work, what methods they expose and what you can model with them is the key to understanding Redis. First though, let's wrap our heads around what it means to expose data structures.
 
+现实情况是Redis拥有5种数据结构，只有其中的一种是典型的key-value结构。掌握这五种数据结构，它们如何运作，各自具备什么样的方法， 能应用到什么样的数据模型，是掌握Redis的关键。首先，让我们揭开这5种数据结构的神秘面纱吧。
+
 If we were to apply this data structure concept to the relational world, we could say that databases expose a single data structure - tables. Tables are both complex and flexible. There isn't much you can't model, store or manipulate with tables. However, their generic nature isn't without drawbacks. Specifically, not everything is as simple, or as fast, as it ought to be. What if, rather than having a one-size-fits-all structure, we used more specialized structures? There might be some things we can't do (or at least, can't do very well), but surely we'd gain in simplicity and speed?
+
+如果我们用这种数据结构的概念来审视传统的关系数据库，我们可以说那些数据库只有一种数据结构——表。表既复杂又有延展性。不能用表来建模、存储、操作的数据屈指可数。然而，它们的通用属性并不是百利而无一害的。尤其是，并不是所有数据都能像它们原本应当地那样的简单而快速。比方说，不采用一个尺寸能适应所有数据的结构，而是更加序列化的结构？有些事情我们做不到了（至少做不好），但能否在简单性和速度方面能有所提升？
 
 Using specific data structures for specific problems? Isn't that how we code? You don't use a hashtable for every piece of data, nor do you use a scalar variable. To me, that defines Redis' approach. If you are dealing with scalars, lists, hashes, or sets, why not store them as scalars, lists, hashes and sets? Why should checking for the existence of a value be any more complex than calling `exists(key)` or slower than O(1) (constant time lookup which won't slow down regardless of how many items there are)?
 
+针对特定的问题采用特定的数据结构，这不正是我们编程的方法么？你不会将所有的数据都放在一个哈希表里，也不会每个都定义为一个string变量。对于我来说，这就定义了Redis的处事之道。如果你处理的数据本身就是string，lists，hash或是sets，那么为什么不直接将它们存储为string，lists，hash或是sets。我们只检验一个值是否存在的操作要比调用`exists(key)`更复杂，或比O(1)还慢（静态查询时间，不会因为数据集合的规模影响）？
+
 # The Building Blocks
+# 基本元素
 
 ## Databases
+## 数据库
 
 Redis has the same basic concept of a database that you are already familiar with. A database contains a set of data. The typical use-case for a database is to group all of an application's data together and to keep it separate from another application's.
 
+Redis中数据库的基本概念与您已经熟知的相同。数据库包含一组数据。数据库的典型应用案例就是将某个应用的所有数据分组集合在一起，并与别的应用的数据分离开。
+
 In Redis, databases are simply identified by a number with the default database being number `0`. If you want to change to a different database you can do so via the `select` command. In the command line interface, type `select 1`. Redis should reply with an `OK` message and your prompt should change to something like `redis 127.0.0.1:6379[1]>`. If you want to switch back to the default database, just enter `select 0` in the command line interface.
 
+在Redis中，数据库只是由简单的一个数字来进行标识的，默认值为0。如果你想要切换到不同的数据库中，可以通过“select”命令。在命令行界面内，输入“select 1”。Reids就会回复一个“OK”提示，您的命令提示符就会变为“redis 127.0.0.1:6379[1]>”，如果需要切换回默认的数据库，只需要在命令行输入“select 0”即可。
+
 ## Commands, Keys and Values
+## 命令，键和值
 
 While Redis is more than just a key-value store, at its core, every one of Redis' five data structures has at least a key and a value. It's imperative that we understand keys and values before moving on to other available pieces of information.
 
+Redis并不仅仅是一个"键-值"存储仓库，不过在它的核心，每个数据，无论它是其五种数据结构中的那一种，都至少拥有一个键和一个值。在我们继续学习之前，我们的首要任务是理解redis的键和值。
+
 Keys are how you identify pieces of data. We'll be dealing with keys a lot, but for now, it's good enough to know that a key might look like `users:leto`. One could reasonably expect such a key to contain information about a user named `leto`. The colon doesn't have any special meaning, as far as Redis is concerned, but using a separator is a common approach people use to organize their keys.
+
+键是对每条数据的定义，我们将大量围绕键展开操作。但现在，只需要了解一个键可能看起来像“users:leto”。大家大概可以合理地推断出这个键包含的数据是关于一个名为“leto”的用户。冒号“：”并没有特殊的意义，至少Redis并不关心，但使用这样的分隔符，是人们常用的用于组织管理键的常用方法。
 
 Values represent the actual data associated with the key. They can be anything. Sometimes you'll store strings, sometimes integers, sometimes you'll store serialized objects (in JSON, XML or some other format). For the most part, Redis treats values as a byte array and doesn't care what they are. Note that different drivers handle serialization differently (some leave it up to you) so in this book we'll only talk about string, integer and JSON.
 
+值代表与键关联的具体数据。它可以是任意类型，可以是字符串、整形数据，甚至是存储的序列化对象（以JSON、XML或其它形式）。在大多数情况，Redis只是将值当作字节数组，而并不关心其具体内容。值得逐一的是，不同的驱动会以不同的方式处理序列化数据（有些会由用户决定）。这里，我们只会介绍有关字符串、整形和JSON的情况。
+
 Let's get our hands a little dirty. Enter the following command:
 
-	set users:leto "{name: leto, planet: dune, likes: [spice]}"
+我们动手开始干吧，输入以下命令：
 
+	set users:leto "{name: leto, planet: dune, likes: [spice]}"
+    
 This is the basic anatomy of a Redis command. First we have the actual command, in this case `set`. Next we have its parameters. The `set` command takes two parameters: the key we are setting and the value we are setting it to. Many, but not all, commands take a key (and when they do, it's often the first parameter). Can you guess how to retrieve this value? Hopefully you said (but don't worry if you weren't sure!):
+
+这就是一条Redis命令的基本结构。首先我们输入实际命令，在本例中就是“set”。接下来我们输入它的参数。"set"命令需要两个参数：我们指定的键，以及它所对应的值。绝大多数命令都以键作为输入参数（这时候，键通常作为第一参数）。是不是能猜出如何获取键所对应的值？希望您能立马反应上来。（不缺定也不要紧哈！）
 
 	get users:leto
 
 Go ahead and play with some other combinations. Keys and values are fundamental concepts, and the `get` and `set` commands are the simplest way to play with them. Create more users, try different types of keys, try different values.
 
+放手去尝试其它的组合吧。键和值是最基本的概念，“get”和“set”是操作它们最简单的命令。创建更多的用户，并尝试不同的键和值吧。
+
 ## Querying
+## 查询
 
 As we move forward, two things will become clear. As far as Redis is concerned, keys are everything and values are nothing. Or, put another way, Redis doesn't allow you to query an object's values. Given the above, we can't find the user(s) which live on planet `dune`.
 
+随着我们学习深入，有两个概念会变得清晰起来。对Redis来说，键就是一切，而值毫无意义。或者换种说法，，Redis不允许你对对象的值进行查询。鉴于此，我们无法查询出所有居住在“dune”星球上的用户。
+
 For many, this will cause some concern. We've lived in a world where data querying is so flexible and powerful that Redis' approach seems primitive and unpragmatic. Don't let it unsettle you too much. Remember, Redis isn't a one-size-fits-all solution. There'll be things that just don't belong in there (because of the querying limitations). Also, consider that in some cases you'll find new ways to model your data.
+
+对于大多数人来说，这可能引起一些顾虑。我们所了解的数据库中数据查询是那么地灵活和强大，但Redis的招数看起来低级而且不敏捷。别让这种顾虑太过于困扰你。Redis并不是一个大小通吃的解决方案。同时，考虑一下在有些情况下我们可以使用新的方法来重新组织我们的数据。
 
 We'll look at more concrete examples as we move on, but it's important that we understand this basic reality of Redis. It helps us understand why values can be anything - Redis never needs to read or understand them. Also, it helps us get our minds thinking about modeling in this new world.
 
+接下来我们会看到更加具体的例子，但首先我们需要了解到Redis这一实际特性。这就有助于我们了解为什么值可以是任何东西。Redis从未需要读取或是理解它们。而且，这也有助于我们思考在这种新环境下对数据如何建模。
+
 ## Memory and Persistence
+## 内存与持久化
 
 We mentioned before that Redis is an in-memory persistent store. With respect to persistence, by default, Redis snapshots the database to disk based on how many keys have changed. You configure it so that if X number of keys change, then save the database every Y seconds. By default, Redis will save the database every 60 seconds if 1000 or more keys have changed all the way to 15 minutes if 9 or less keys has changed.
 
+之前我们提到Redis是一种内存持久化存储。为了持久化的需要，在默认情况下，Redis依据多少键发生改变将数据快照保存到磁盘。你可以自定义设置，这样如果数量位X的键发生了改变，那么就将数据库每Y秒保存一次。在默认情况下，Redis可以快到在1000以上个键发生了变化的情况下，每60秒保存一次数据库；慢到当9个以下的键发生变化时15分钟一次。
+
 Alternatively (or in addition to snapshotting), Redis can run in append mode. Any time a key changes, an append-only file is updated on disk. In some cases it's acceptable to lose 60 seconds worth of data, in exchange for performance, should there be some hardware or software failure. In some cases such a loss is not acceptable. Redis gives you the option. In chapter 6 we'll see a third option, which is offloading persistence to a slave.
+
+另外，在系统快照的基础上，Redis还能运行为追加模式。每次键值变化，只在磁盘上保存一个追加记录。在有些情况下，比如为了获取性能表现，或在软硬件故障的情况下，丢失60秒的数据以是可以被允许的。但在另外一些情况下，这种损失是坚决不允许的。Redis将选择权交给您。在第6章，我们可以看到第三种选项，我们可以将载荷分担到从机上。
 
 With respect to memory, Redis keeps all your data in memory. The obvious implication of this is the cost of running Redis: RAM is still the most expensive part of server hardware.
 
+内存方面，Redis将所有数据都保存在内存中，这明显意味这就是运行redis的代价，内存依然是服务器硬件配置中最贵的部分。
+
 I do feel that some developers have lost touch with how little space data can take. The Complete Works of William Shakespeare takes roughly 5.5MB of storage. As for scaling, other solutions tend to be IO- or CPU-bound. Which limitation (RAM or IO) will require you to scale out to more machines really depends on the type of data and how you are storing and querying it. Unless you're storing large multimedia files in Redis, the in-memory aspect is probably a non-issue. For apps where it is an issue you'll likely be trading being IO-bound for being memory bound.
+
+我真切地感受到有些开发者已经忘记了数据所占用的空间是多么地小。就拿莎士比亚全集来说，大概只占5.5MB的存储空间，对于切片应用来说，其它的解决方案倾向与受IO或是CPU的束缚，这些限制以及您存储查询这些数据的方式将迫使你将服务切片到更多的机器上。除非你采用Redis存储大量的多媒体文件，否则对于内存存储来说，这基本不是问题。对于应用来说，这就取决与你想要其受IO限制或是内存限制。
 
 Redis did add support for virtual memory. However, this feature has been seen as a failure (by Redis' own developers) and its use has been deprecated.
 
+Redis过去也支持虚拟内存。然而，这个特性已经被看作是一个失败（Redis官方的开发人员是这样认为的），所以也不推荐使用。
+
 (On a side note, that 5.5MB file of Shakespeare's complete works can be compressed down to roughly 2MB. Redis doesn't do auto-compression but, since it treats values as bytes, there's no reason you can't trade processing time for RAM by compressing/decompressing the data yourself.)
 
+（备注，5.5MB的莎士比亚全集可以完全压缩到大概2MB。Redis虽然不会自动压缩，但是既然都是以字节串的角度看待这些值，那么为什么不通过压缩/解压缩这些数据来换来内存处理速度的提升呢 ？）
+
 ## Putting It Together
+## 汇总
 
 We've touched on a number of high level topics. The last thing I want to do before diving into Redis is bring some of those topics together. Specifically, query limitations, data structures and Redis' way to store data in memory.
 
+我们已经接触到了一些高阶主题。在我们继续深入Redis之前，我还想将这些主题汇总一下，具体指的是查询限制，数据结构，以及Redis的内存存储方式。
+
 When you add those three things together you end up with something wonderful: speed. Some people think "Of course Redis is fast, everything's in memory." But that's only part of it. The real reason Redis shines versus other solutions is its specialized data structures.
+
+当您将这三者结合在一起，您就会发现它们共同构筑的优势——速度。有人会说“Redis当然会快，所有东西都保存在内存中嘛。”但这只是其中部分原因。Redis真正超越同类方案的闪光指出，是在于其特殊的数据结构。
 
 How fast? It depends on a lot of things - which commands you are using, the type of data, and so on. But Redis' performance tends to be measured in tens of thousands, or hundreds of thousands of operations **per second**. You can run `redis-benchmark` (which is in the same folder as the `redis-server` and `redis-cli`) to test it out yourself.
 
+到底有多快？这取决于很多方面——您使用的是什么命令，什么类型的数据等等。但是Redis表现的计量单位，是**每秒**数万多数十万次操作。
+
 I once changed code which used a traditional model to using Redis. A load test I wrote took over 5 minutes to finish using the relational model. It took about 150ms to complete in Redis. You won't always get that sort of massive gain, but it hopefully gives you an idea of what we are talking about.
+
+我曾经将项目从从传统的数据模型移植到Redis上。我使用传统模型要超过5分钟才能完成的负载测试，在Redis下大概只花了150ms。一般情况下，您是很难获取如此巨幅的提升的。希望这个例子告诉您Redis所要呈现的性能。
 
 It's important to understand this aspect of Redis because it impacts how you interact with it. Developers with an SQL background often work at minimizing the number of round trips they make to the database. That's good advice for any system, including Redis. However, given that we are dealing with simpler data structures, we'll sometimes need to hit the Redis server multiple times to achieve our goal. Such data access patterns can feel unnatural at first, but in reality it tends to be an insignificant cost compared to the raw performance we gain.
 
+理解Redis这方面的性能对于我们与其进行交互的方式来说非常重要。拥有SQL背景的开发者通常要最大程度上的减少数据库中的环回。这对于包括Redis在内的所有系统来说都是好建议。但是，鉴于我们是要处理更加简单的数据结构。我们有时需要多次“破坏”Redis才能达到我们的目标。这样的数据处理方法，起初会感觉不自然，但实际情况是这比起我们的原始表现来说这些代价简直微不足道。
+
 ## In This Chapter
+## 小结
 
 Although we barely got to play with Redis, we did cover a wide range of topics. Don't worry if something isn't crystal clear - like querying. In the next chapter we'll go hands-on and any questions you have will hopefully answer themselves.
 
+虽然只是简单体验了Redis，我们还是提到了许多主题。有些概念将得还不够透彻——比方说查询，不过不必担心。在下一章中，我们将继续深入，希望到时候所有的问题都能迎刃而解。
+
 The important takeaways from this chapter are:
+本章概要：
 
 * Keys are strings which identify pieces of data (values)
+* 键用以标定数据（值）的字符串
 
 * Values are arbitrary byte arrays that Redis doesn't care about
+* 值是二进制字节流，Redis并不关心其内容
 
 * Redis exposes (and is implemented as) five specialized data structures
+* Redis具备（并实现）五种特制的数据结构
 
 * Combined, the above make Redis fast and easy to use, but not suitable for every scenario
+* 结合在一起，所有以上特质让Redis快捷而且医用，但未必适用于所有场景。
 
 # Chapter 2 - The Data Structures
+# 数据结构
 
 It's time to look at Redis' five data structures. We'll explain what each data structure is, what methods are available and what type of feature/data you'd use it for.
 
+现在是时候看看Redis的五种数据结构了。我们将逐一介绍各种结构，以及其可用的方法，特性。
+
 The only Redis constructs we've seen so far are commands, keys and values. So far, nothing about data structures has been concrete. When we used the `set` command, how did Redis know what data structure to use? It turns out that every command is specific to a data structure. For example when you use `set` you are storing the value in a string data structure. When you use `hset` you are storing it in a hash. Given the small size of Redis' vocabulary, it's quite manageable.
+
+我们至今接触到的Redis结构只有命令、键和值，还没有具体的数据结构。当我调用“set”命令的时候，Redis如何知道我们要用那种数据结构呢？实际情况是每种命令都有其针对的数据结构。例如，当调用“set”的时候，您正将值保存到一个“string”类的数据结构中。当您调用“hset”的时候，值会保存到一个hash类型中。鉴于Redis的词汇表相当短小，这些还是很容易掌握的。
 
 **[Redis' website](http://redis.io/commands) has great reference documentation. There's no point in repeating the work they've already done. We'll only cover the most important commands needed to understand the purpose of a data structure.**
 
+**Redis的官网(http://redis.io/commands)上有完备的参考文档。重复他们已作的工作毫无意义。我们在这里只会介绍其中最重要的命令用于理解各种数据结构的目的。**
+
 There's nothing more important than having fun and trying things out. You can always erase all the values in your database by entering `flushdb`, so don't be shy and try doing crazy things!
+
+没有什么比动手实验更重要的了。您总可以通过调用`flushdb`命令清除数据库内所有数据。所以，想尝试什么疯狂的念头，就大胆去试吧。
 
 ## Strings
 
 Strings are the most basic data structures available in Redis. When you think of a key-value pair, you are thinking of strings. Don't get mixed up by the name, as always, your value can be anything. I prefer to call them "scalars", but maybe that's just me.
 
+Strings是Redis中最基础的数据结构了。当你在想一个键-值对的时候，你想的就是strings类型。请不要被它的名字所迷惑，就像之前所说，它的值可以是任何数据，我更倾向于称之为“标量”，不过可能只有我这么来。
+
 We already saw a common use-case for strings, storing instances of objects by key. This is something that you'll make heavy use of:
+我们已经看到最普通的strings用法，将对象实例用key来保存，以下这种用法你会大量用到：
 
 	set users:leto "{name: leto, planet: dune, likes: [spice]}"
 
 Additionally, Redis lets you do some common operations. For example `strlen <key>` can be used to get the length of a key's value; `getrange <key> <start> <end>` returns the specified range of a value; `append <key> <value>` appends the value to the existing value (or creates it if it doesn't exist already). Go ahead and try those out. This is what I get:
+
+另外，Redis允许你进行一些常用的操作，比如，`strlen <key>`可以用户获取值的的长度；`getrange <key> <start> <end>`将返回指定区域内的值；`append <key> <value>`将追加value到已有的键值上（如果该键不存在就创建一个）。动手尝试，以下是我所得到的结果。
 
 	> strlen users:leto
 	(integer) 42
@@ -195,7 +336,11 @@ Additionally, Redis lets you do some common operations. For example `strlen <key
 
 Now, you might be thinking, that's great, but it doesn't make sense. You can't meaningfully pull a range out of JSON or append a value. You are right, the lesson here is that some of the commands, especially with the string data structure, only make sense given specific type of data.
 
+现在，你可能会想，这不赖，但也没什么意义，你不能有意义地获取JSON的某段数据，或追加一个值。你是对的，这里只介绍了一些string数据结构相关的命令，只对这种特定的值有意义。
+
 Earlier we learnt that Redis doesn't care about your values. Most of the time that's true. However, a few string commands are specific to some types or structure of values. As a vague example, I could see the above `append` and `getrange` commands being useful in some custom space-efficient serialization. As a more concrete example I give you the `incr`, `incrby`, `decr` and `decrby` commands. These increment or decrement the value of a string:
+
+之前我们了解到Redis并不关系具体的值，大多数情况下这是对的，然而有些strings的命令是某些特定类型的值所专用的。作为一个定义相对模糊的类型，我可以发现像`append`、`getrange`命令在某天写特定场合下很有用，尤其是对于序列化的数据。接下来我介绍的`incr`、`incrby`、`decr`和`decrby`命令，用于对一个string值进行增减操作。
 
 	> incr stats:page:about
 	(integer) 1
@@ -209,18 +354,28 @@ Earlier we learnt that Redis doesn't care about your values. Most of the time th
 
 As you can imagine, Redis strings are great for analytics. Try incrementing `users:leto` (a non-integer value) and see what happens (you should get an error).
 
+如您所想，Redis的strings类型适用于进行分析。试试自增一下`users:leto`（一个非整型数据）的值会出现什么情况（会返回一个错误）。
+
 A more advanced example is the `setbit` and `getbit` commands. There's a [wonderful post](http://blog.getspool.com/2011/11/29/fast-easy-realtime-metrics-using-redis-bitmaps/) on how Spool uses these two commands to efficiently answer the question "how many unique visitors did we have today". For 128 million users a laptop generates the answer in less than 50ms and takes only 16MB of memory.
 
+一个更加进阶的例子是`setbit`、`getbit`命令。有篇[博客](http://blog.getspool.com/2011/11/29/fast-easy-realtime-metrics-using-redis-bitmaps/)讲到Spool是如何应用这两条命令来有效回答“当日有多少不重复访客”这类的问题。对于128兆条用户记录，一台笔记本电脑大概能在50ms内计算出结构，而且值消耗16MB内存。
+
 It isn't important that you understand how bitmaps work, or how Spool uses them, but rather to understand that Redis strings are more powerful than they initially seem. Still, the most common cases are the ones we gave above: storing objects (complex or not) and counters. Also, since getting a value by key is so fast, strings are often used to cache data.
+
+现在急于去理解bitmaps的工作原理以及Spool是如何应用不是很重要，不如先对Redis的strings类型的强大更有概念些。而且，最重要的用法在上面已经给出来了，保存对象（不管复杂与否）以及计数器。另外，鉴于从键中获取值相当快速，strings常常用来当数据缓存。
 
 ## Hashes
 
 Hashes are a good example of why calling Redis a key-value store isn't quite accurate. You see, in a lot of ways, hashes are like strings. The important difference is that they provide an extra level of indirection: a field. Therefore, the hash equivalents of `set` and `get` are:
 
+Hashes（哈希表）是我们称Redis只是一个键-值存储器不太准确的好例证之一。可以看到，在很多方面，hashes和strings很相像。最重要的区别是，它还提供一个次级的指向：字段。所以对应与string的`set`和`get`，hash有：
+
 	hset users:goku powerlevel 9000
 	hget users:goku powerlevel
 
 We can also set multiple fields at once, get multiple fields at once, get all fields and values, list all the fields or delete a specific field:
+
+我们还能一次性对多个字段进行赋值，或取值。获取所有字段和值、所有字段、或删除一个特定字段。
 
 	hmset users:goku race saiyan age 737
 	hmget users:goku race powerlevel
@@ -230,121 +385,187 @@ We can also set multiple fields at once, get multiple fields at once, get all fi
 
 As you can see, hashes give us a bit more control over plain strings. Rather than storing a user as a single serialized value, we could use a hash to get a more accurate representation. The benefit would be the ability to pull and update/delete specific pieces of data, without having to get or write the entire value.
 
+可以看到，hashes向我们提供比简单的string更多的控制。不仅仅是用一个简单的序列化的值来保存用户实例，我们可以用hash实现更加精确的表达。好处是我们可以获取、更新/删除指定字段的数据，而无需获取或写入整个值。
+
 Looking at hashes from the perspective of a well-defined object, such as a user, is key to understanding how they work. And it's true that, for performance reasons, more granular control might be useful. However, in the next chapter we'll look at how hashes can be used to organize your data and make querying more practical. In my opinion, this is where hashes really shine.
+
+从一个完整定义对象（如user对象)的角度来看待hashes，是理解其工作方式的关键。也确实是这样，采用更加颗粒化的操作对于提升性能效果会有所帮助。然而，在下一节，我们可以看到hashes是如何用来组织数据，让查询变得更加可行。以我的偏见，这才是hash类型的闪光点所在。
 
 ## Lists
 
 Lists let you store and manipulate an array of values for a given key. You can add values to the list, get the first or last value and manipulate values at a given index. Lists maintain their order and have efficient index-based operations. We could have a `newusers` list which tracks the newest registered users to our site:
+
+Lists 让我们可以在一个键下存储和操作一组值。你可以向list添加值，获取list头或尾的值，或对某个特定下标的值进行操作。Lists会保持其内部顺序，并执行高效的基于序号的操作。我们可以使用一个名为`newusers`的list来跟踪我们网站上最新注册的用户：
 
 	lpush newusers goku
 	ltrim newusers 0 49
 
 First we push a new user at the front of the list, then we trim it so that it only contains the last 50 users. This is a common pattern. `ltrim` is an O(N) operation, where N is the number of values we are removing. In this case, where we always trim after a single insert, it'll actually have a constant performance of O(1) (because N will always be equal to 1).
 
+首先我们在List头部插入一个新用户，然后我们缩减这个list，使其只包含最新的50个用户。这是一种常用的用法，`ltrim`是一个O(N)的操作，N的值是我们要排除的元素数量，在本例中，我们在每次执行一个插入操作时就执行trim操作，所以实际上它的执行效率是O(1)，因为N的值始终为1。
+
 This is also the first time that we are seeing a value in one key referencing a value in another. If we wanted to get the details of the last 10 users, we'd do the following combination:
+
+这里我们第一次将一个键名作为value参数传入到一个list。如果想要获取最后10名用户的细节数据，我们可以使用以下命令组合：
 
 	keys = redis.lrange('newusers', 0, 10)
 	redis.mget(*keys.map {|u| "users:#{u}"})
 
 The above is a bit of Ruby which shows the type of multiple roundtrips we talked about before.
 
+这是一段Ruby代码，展现之前我们提到的多重引用。
+
 Of course, lists aren't only good for storing references to other keys. The values can be anything. You could use lists to store logs or track the path a user is taking through a site. If you were building a game, you might use one to track a queued user actions.
+
+当然，lists不仅仅擅于保存其它键的引用。其值可以是任何类型。您可以用lists来保存日志，记录用户在网站上的访问记录。如果你想设计一款游戏，你可以用list来记录用户的动作序列。
 
 ## Sets
 
 Sets are used to store unique values and provide a number of set-based operations, like unions. Sets aren't ordered but they provide efficient value-based operations. A friend's list is the classic example of using a set:
+
+Sets（集合）用于保存去重的值，并提供一些基于集合的操作，如unions。Sets内部无顺序科研，但是它能提供有效的基于值的操作。好友清单就是使用sets的典型应用。
 
 	sadd friends:leto ghanima paul chani jessica
 	sadd friends:duncan paul jessica alia
 
 Regardless of how many friends a user has, we can efficiently tell (O(1)) whether userX is a friend of userY or not:
 
-	sismember friends:leto jessica
+无论这个用户有多少朋友，我们都能非常高效（O(1)）地查询用户X是否是用户Y的朋友：
+
+    sismember friends:leto jessica
 	sismember friends:leto vladimir
 
 Furthermore we can see whether two or more people share the same friends:
+此外，我们还能查看两个或更多的用户中朋友清单中的重合部分：
 
 	sinter friends:leto friends:duncan
 
 and even store the result at a new key:
+还能将结果保存到一个新的键中：
 
 	sinterstore friends:leto_duncan friends:leto friends:duncan
 
 Sets are great for tagging or tracking any other properties of a value for which duplicates don't make any sense (or where we want to apply set operations such as intersections and unions).
 
+Set适用于标签、或用于跟踪一个值的其它属性，但这些属性不会重现重复内容的情况，或者我们可以讲其用于类似于重合查询以及unions类数据结构的情况。
+
 ## Sorted Sets
 
 The last and most powerful data structure are sorted sets. If hashes are like strings but with fields, then sorted sets are like sets but with a score. The score provides sorting and ranking capabilities. If we wanted a ranked list of friends, we might do:
 
+最后一个也是最强大的数据结构，就是sorted sets（排序集合）。如果Hash是带有字段的string，那么sorted sets就像是带有分值的sets。这些分值提供了分类以及排序的能力。如果我们要一个好友清单的排序结构，我们可以这么来：
+
 	zadd friends:duncan 70 ghanima 95 paul 95 chani 75 jessica 1 vladimir
 
 Want to find out how many friends `duncan` has with a score of 90 or over?
+想要查询`duncan`的好友中有多少名在90分以上？
 
 	zcount friends:duncan 90 100
 
 How about figuring out `chani`'s rank?
+若要查询`chani`的排位？
 
 	zrevrank friends:duncan chani
 
 We use `zrevrank` instead of `zrank` since Redis' default sort is from low to high (but in this case we are ranking from high to low). The most obvious use-case for sorted sets is a leaderboard system. In reality though, anything you want sorted by an some integer, and be able to efficiently manipulate based on that score, might be a good fit for a sorted set.
 
+这里我们用`zrevrank`，而不是`zrank`，因为Redis的默认排序顺序为从低到高，但在本例中我们需要从高到低的逆序排列。sortred sets的一个最浅显的应用就是一个排位赛模型。从现实角度来说，所有你想用整形进行排序，并以此分值为基础进行操作的数据模型，可能都适用于sorted set。
+
 ## In This Chapter
 
 That's a high level overview of Redis' five data structures. One of the neat things about Redis is that you can often do more than you first realize. There are probably ways to use string and sorted sets that no one has thought of yet. As long as you understand the normal use-case though, you'll find Redis ideal for all types of problems. Also, just because Redis exposes five data structures and various methods, don't think you need to use all of them. It isn't uncommon to build a feature while only using a handful of commands.
 
+## 小结
+
+本章大致介绍了Redis的五种数据结构。
+
 # Chapter 3 - Leveraging Data Structures
+# 效率分析
 
 In the previous chapter we talked about the five data structures and gave some examples of what problems they might solve. Now it's time to look at a few more advanced, yet common, topics and design patterns.
 
+之前我们大致介绍了五种数据结构，并给出了一些具体应用的例子。现在我们可以更进一步，谈一些深入的话题以及设计模式。
+
 ## Big O Notation
+## 大O标记法
 
 Throughout this book we've made references to the Big O notation in the form of O(n) or O(1). Big O notation is used to explain how something behaves given a certain number of elements. In Redis, it's used to tell us how fast a command is based on the number of items we are dealing with.
 
+之前我们有提到大O标记法的概念，无论是O(N)还是O(1)，大O标记法是用于解释对特定数量的元素执行操作时的复杂度指标。在Redis中，这个概念用于告诉我们基于我们要处理的元素数量，特定的操作需要执行多长时间。
 Redis documentation tells us the Big O notation for each of its commands. It also tells us what the factors are that influence the performance. Let's look at some examples.
+
+Redis文档对每条命令，都用大O标记法介绍其复杂度，还介绍了影响其效率的因素。我们看看以下例子。
 
 The fastest anything can be is O(1) which is a constant. Whether we are dealing with 5 items or 5 million, you'll get the same performance. The `sismember` command, which tells us if a value belongs to a set, is O(1). `sismember` is a powerful command, and its performance characteristics are a big reason for that. A number of Redis commands are O(1).
 
+最快的复杂度莫过于是O(1)，它是个常量。无论是我们是要处理五个元素，或是五百万个元素，执行的速度是一样。“sismember”告诉我们一个值是否被包含在一个set集合中，它的复杂度就是O(1)。“sismember”之所以强大和它的执行效率是分不开的。有一部分Redis指令的复杂度就是O(1)。
+
 Logarithmic, or O(log(N)), is the next fastest possibility because it needs to scan through smaller and smaller partitions. Using this type of divide and conquer approach, a very large number of items quickly gets broken down in a few iterations. `zadd` is a O(log(N)) command, where N is the number of elements already in the set.
+
+指数级，O(log(N))，是第二快的复杂度，因为它所需要扫描的分区越来越小。使用这种分部求解的方法，一个巨大的元素集合可以快速地被迭代分解越来越小的集合。"zadd"就是一个O(log(N))的指令，其中N的值是已有集合中的元素个数。
 
 Next we have linear commands, or O(N). Looking for a non-indexed column in a table is an O(N) operation. So is using the `ltrim` command. However, in the case of `ltrim`, N isn't the number of elements in the list, but rather the elements being removed. Using `ltrim` to remove 1 item from a list of millions will be faster than using `ltrim` to remove 10 items from a list of thousands. (Though they'll probably both be so fast that you wouldn't be able to time it.)
 
+接下来就是线级别，O(N)，如查找一个表中未索引的列。“ltrim”就是这样的命令，但也有一点特殊，N并不是list中所有元素的个数，而是需要移除的元素个数。从一个百万级的list中移除1个元素的速度要比从一个千级的List中移除10个元素的速度要快。（不过它们两个都太快了，以至于你根本没法测量。）
+
 `zremrangebyscore` which removes elements from a sorted set with a score between a minimum and a maximum value has a complexity of O(log(N)+M). This makes it a mix. By reading the documentation we see that N is the number of total elements in the set and M is the number of elements to be removed. In other words, the number of elements that'll get removed is probably going to be more significant, in terms of performance, than the total number of elements in the set.
+
+“zremrangebyscore”命令，是从一个sorted set中移除分值在参数minimum和maximum之间的元素，其复杂度为O(log(N)+M)。这是一种混合表达法。通过阅读文档，我们了解到，N值得集合的元素总数，M值为要移除的元素个数。换言之，要移除的元素个数可能比集合的元素总数对于效率的影响更加显著。
 
 The `sort` command, which we'll discuss in greater detail in the next chapter has a complexity of O(N+M*log(M)). From its performance characteristic, you can probably tell that this is one of Redis' most complex commands.
 
+“sort”命令，将在下一章作更加详尽的介绍，它的复杂度为O(N+M*log(M))，可以从它的复杂度属性大概可以看出这估计是Redis最为复杂的指令了。
+
 There are a number of other complexities, the two remaining common ones are O(N^2) and O(C^N). The larger N is, the worse these perform relative to a smaller N. None of Redis' commands have this type of complexity.
+
+还有其它的复杂度，还有两个常用的，分别是 O(N^2)和O(C^N)。N值越大，执行效率就越低。不过Redis的命令中没有复杂度达到这样的。
 
 It's worth pointing out that the Big O notation deals with the worst case. When we say that something takes O(N), we might actually find it right away or it might be the last possible element.
 
+值得指出的是，大O标记法通常指的是最糟糕的情况。当我们说有个运算复杂度是O(N)，我们可能实际上一下子就求得结果，也有可能要算最后一次才能求得。
 
 ## Pseudo Multi Key Queries
+## 伪多键查询
 
 A common situation you'll run into is wanting to query the same value by different keys. For example, you might want to get a user by email (for when they first log in) and also by id (after they've logged in). One horrible solution is to duplicate your user object into two string values:
+
+我们经常会遇到一个情况，就是要从多个键中查询出相同的值。例如，你可能要通过Email查到用户（当他们首次登录时），或者通过id进行查询用户信息（当他们已经登录后），有一种糟糕的解决方法就是，在两个string副本中都保存一样的用户信息。
 
 	set users:leto@dune.gov "{id: 9001, email: 'leto@dune.gov', ...}"
 	set users:9001 "{id: 9001, email: 'leto@dune.gov', ...}"
 
 This is bad because it's a nightmare to manage and it takes twice the amount of memory.
 
+这种做法很糟糕，对于管理来说是个噩梦，同时消耗了两倍的内存。
+
 It would be nice if Redis let you link one key to another, but it doesn't (and it probably never will). A major driver in Redis' development is to keep the code and API clean and simple. The internal implementation of linking keys (there's a lot we can do with keys that we haven't talked about yet) isn't worth it when you consider that Redis already provides a solution: hashes.
 
+如果Redis可以让一个键链接到另一个键就好了，但是它并没有这么做（大概以后也不准备这样）。Redis开发的一个核心理念就是要保持API的简洁。当您意识到Redis已经提供了一个解决方案：hashed，您就会发现发现链接键并不划算（键的用法有很多我们还没提到）。
+
 Using a hash, we can remove the need for duplication:
+通过hash，我们一个除去复制数据的需要：
 
 	set users:9001 "{id: 9001, email: leto@dune.gov, ...}"
 	hset users:lookup:email leto@dune.gov 9001
 
 What we are doing is using the field as a pseudo secondary index and referencing the single user object. To get a user by id, we issue a normal `get`:
 
+我们这里要做的是将一个字段作为伪附属索引，并将其引用到一个user对象。要通过id获取user，我们只需要执行简单的`get`：
+
 	get users:9001
 
 To get a user by email, we issue an `hget` followed by a `get` (in Ruby):
+要通过email获取user，我们只需要在`get`之后执行`hget`（Ruby实现）：
 
 	id = redis.hget('users:lookup:email', 'leto@dune.gov')
 	user = redis.get("users:#{id}")
 
 This is something that you'll likely end up doing often. To me, this is where hashes really shine, but it isn't an obvious use-case until you see it.
 
+这就是您将在Redis中经常会用到的做法。对于我来说，这正是hashed真正闪光的地方，但如果没有亲眼见到的话，您不会觉得这是一个很明显的用例。
+
 ## References and Indexes
+## 引用与索引
 
 We've seen a couple examples of having one value reference another. We saw it when we looked at our list example, and we saw it in the section above when using hashes to make querying a little easier. What this comes down to is essentially having to manually manage your indexes and references between values. Being honest, I think we can say that's a bit of a downer, especially when you consider having to manage/update/delete these references manually. There is no magic solution to solving this problem in Redis.
 
@@ -752,3 +973,4 @@ Given the number of projects and sites using Redis already, there can be no doub
 In a lot of ways, Redis represents a simplification in the way we deal with data. It peels away much of the complexity and abstraction available in other systems. In many cases this makes Redis the wrong choice. In others it can feel like Redis was custom-built for your data.
 
 Ultimately it comes back to something I said at the very start: Redis is easy to learn. There are many new technologies and it can be hard to figure out what's worth investing time into learning. When you consider the real benefits Redis has to offer with its simplicity, I sincerely believe that it's one of the best investments, in terms of learning, that you and your team can make.
+
